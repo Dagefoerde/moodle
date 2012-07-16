@@ -6890,7 +6890,10 @@ function get_max_upload_sizes($sitebytes = 0, $coursebytes = 0, $modulebytes = 0
     if (!$maxsize = get_max_upload_file_size($sitebytes, $coursebytes, $modulebytes)) {
         return array();
     }
-
+    //Maxbytes can only be set to values greater 100MB if user is admin (cusen_01)
+    if (!is_siteadmin() and $maxsize > 104857600) {
+        $maxsize = 104857600 >= $coursebytes ? 104857600 : $coursebytes ;
+    }
     if ($sitebytes == 0) {
         // Will get the minimum of upload_max_filesize or post_max_size.
         $sitebytes = get_max_upload_file_size();
@@ -6898,9 +6901,7 @@ function get_max_upload_sizes($sitebytes = 0, $coursebytes = 0, $modulebytes = 0
 
     $filesize = array();
     $sizelist = array(10240, 51200, 102400, 512000, 1048576, 2097152,
-                      5242880, 10485760, 20971520, 52428800, 104857600,
-                      262144000, 524288000, 786432000, 1073741824,
-                      2147483648, 4294967296, 8589934592);
+                      5242880, 10485760, 20971520, 52428800, 104857600, 262144000);
 
     // If custombytes is given and is valid then add it to the list.
     if (is_number($custombytes) and $custombytes > 0) {
