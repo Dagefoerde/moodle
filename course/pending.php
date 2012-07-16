@@ -58,9 +58,28 @@ if (has_capability('moodle/site:approvecourse', $context)) {
 if (!empty($approve) and confirm_sesskey()) {
     /// Load the request.
     $course = new course_request($approve);
+    /// Get and save the password
+    $requestid = $course->__get('id');
+    $password = $DB->get_field('course_request', 'password', array('id' => $requestid));
     $courseid = $course->approve();
 
     if ($courseid !== false) {
+        //  @WWU CUSEN_01: set self-enrolement-password
+        if (!empty($password)) {
+            if ($DB->get_record('enrol', array('courseid'=>$courseid, 'enrol'=>'self')) !== false) {
+                // update old one, if self-enrole already exists
+                $DB->set_field('enrol', 'password', $password, array('courseid'=>$courseid, 'enrol'=>'self'), MUST_EXIST);
+                $DB->set_field('enrol', 'status', 0, array('courseid'=>$courseid, 'enrol'=>'self'), MUST_EXIST);
+            } else {
+                // create new one, if self-enrole is not existing
+                $tcourse = $DB->get_record('course', array('id'=>$courseid), '*', MUST_EXIST);
+                $plugin = enrol_get_plugin('self');
+                $fields = array('status'=>0, 'name'=>'', 'password'=>$password, 'customint1'=>$plugin->get_config('groupkey'), 'customint2'=>$plugin->get_config('longtimenosee'),
+                    'customint3'=>$plugin->get_config('maxenrolled'), 'customint4'=>$plugin->get_config('sendcoursewelcomemessage'), 'customtext1'=>'',
+                    'roleid'=>$plugin->get_config('roleid'), 'enrolperiod'=>$plugin->get_config('enrolperiod'), 'enrolstartdate'=>0, 'enrolenddate'=>0);
+                $plugin->add_instance($tcourse, $fields);
+            }
+        }
         if (has_capability('moodle/course:update', context_course::instance($courseid))) {
             redirect(new moodle_url('/course/edit.php', ['id' => $courseid, 'returnto' => 'pending']));
         } else {

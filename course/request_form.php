@@ -58,12 +58,12 @@ class course_request_form extends moodleform {
 
         $mform->addElement('header','coursedetails', get_string('courserequestdetails'));
 
-        $mform->addElement('text', 'fullname', get_string('fullnamecourse'), 'maxlength="254" size="50"');
+        $mform->addElement('text', 'fullname', get_string('fullnamecourse').' (z.B. Kurstitel, WS 12/13, Dozentenname)', 'maxlength="254" size="50"'); //Changes by cusen_01 (s.o.) 15.07.2011
         $mform->addHelpButton('fullname', 'fullnamecourse');
         $mform->addRule('fullname', get_string('missingfullname'), 'required', null, 'client');
         $mform->setType('fullname', PARAM_TEXT);
 
-        $mform->addElement('text', 'shortname', get_string('shortnamecourse'), 'maxlength="100" size="20"');
+        $mform->addElement('text', 'shortname', get_string('shortnamecourse').' (Abk. d. Kurstitels max 15 Zeichen)', 'maxlength="15" size="20"'); //Changes by cusen_01 (s.o.) 15.07.2011
         $mform->addHelpButton('shortname', 'shortnamecourse');
         $mform->addRule('shortname', get_string('missingshortname'), 'required', null, 'client');
         $mform->setType('shortname', PARAM_TEXT);
@@ -75,15 +75,19 @@ class course_request_form extends moodleform {
             $mform->addHelpButton('category', 'coursecategory');
         }
 
-        $mform->addElement('editor', 'summary_editor', get_string('summary'), null, course_request::summary_editor_options());
+        $mform->addElement('editor', 'summary_editor', get_string('summary').' (Optional KVV Kommentar)', null, course_request::summary_editor_options()); //Changes by cusen_01 (s.o.) 15.07.2011
         $mform->addHelpButton('summary_editor', 'coursesummary');
         $mform->setType('summary_editor', PARAM_RAW);
 
         $mform->addElement('header','requestreason', get_string('courserequestreason'));
 
-        $mform->addElement('textarea', 'reason', get_string('courserequestsupport'), array('rows'=>'15', 'cols'=>'50'));
+        $mform->addElement('textarea', 'reason', get_string('courserequestsupport').' (Informationen zur Einsortierung in die Kursuebersicht - etwa Fachbereich/Institut - und weitere Anmerkungen.)', array('rows'=>'15', 'cols'=>'50')); //Changes by cusen_01 (s.o.) 15.07.2011
         $mform->addRule('reason', get_string('missingreqreason'), 'required', null, 'client');
         $mform->setType('reason', PARAM_TEXT);
+        
+        $mform->addElement('header', 'header', get_string('pluginname', 'enrol_self'));
+        $mform->addElement('passwordunmask', 'password', get_string('password', 'enrol_self'));
+        $mform->addHelpButton('password', 'config_enrolment_key','local_lsf_unification');
 
         $this->add_action_buttons(true, get_string('requestcourse'));
     }

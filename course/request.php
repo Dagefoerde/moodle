@@ -26,6 +26,7 @@
 require_once(__DIR__ . '/../config.php');
 require_once($CFG->dirroot . '/course/lib.php');
 require_once($CFG->dirroot . '/course/request_form.php');
+global $DB;
 
 // Where we came from. Used in a number of redirects.
 $url = new moodle_url('/course/request.php');
@@ -79,7 +80,11 @@ if ($requestform->is_cancelled()){
 
 } else if ($data = $requestform->get_data()) {
     $request = course_request::create($data);
-
+    // set self-enrolement-password
+    if (isset($data->password) && !empty($data->password)) {
+        $requestID = $request->__get("id");
+        $DB->set_field('course_request', 'password', $data->password, array('id' => $requestID));
+    }
     // And redirect back to the course listing.
     notice(get_string('courserequestsuccess'), $returnurl);
 }
