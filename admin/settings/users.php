@@ -213,6 +213,8 @@ if ($hassiteconfig
                 new lang_string('showuseridentity_desc', 'admin'), array('email' => 1), array(
                     'username'    => new lang_string('username'),
                     'idnumber'    => new lang_string('idnumber'),
+                    //FEATURE: cusen_01 added username as field for useridentity
+                    'username'    => new lang_string('username'),
                     'email'       => new lang_string('email'),
                     'phone1'      => new lang_string('phone1'),
                     'phone2'      => new lang_string('phone2'),
