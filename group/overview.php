@@ -303,7 +303,7 @@ if ($download == "ods" && has_capability('moodle/course:managegroups', $context)
     /// Send HTTP headers
     $workbook->send($filename);
     /// Creating the first worksheet
-    $myxls = & $workbook->add_worksheet($strresponses);
+    $myxls = $workbook->add_worksheet();
     /// Print names of all the fields
     $myxls->write_string(0, 0, get_string('grouping', 'group'));
     $myxls->write_string(0, 1, get_string("group"));
@@ -366,7 +366,7 @@ if ($download == "xls" && has_capability('moodle/course:managegroups', $context)
     /// Send HTTP headers
     $workbook->send($filename);
     /// Creating the first worksheet
-    $myxls = & $workbook->add_worksheet($strresponses);
+    $myxls = $workbook->add_worksheet();
 
     /// Print names of all the fields
     $myxls->write_string(0, 0, get_string('grouping', 'group'));

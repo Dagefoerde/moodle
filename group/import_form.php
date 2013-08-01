@@ -56,6 +56,9 @@ class groups_import_form extends moodleform {
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
 
+        $mform->addElement('text', 'separator', 'Separator', array('size'=>'1', 'value'=>isset($CFG->CSV_DELIMITER)?$CFG->CSV_DELIMITER:','));
+        $mform->setType('separator', PARAM_NOTAGS);
+
         $this->add_action_buttons(true, get_string('importgroups', 'core_group'));
 
         $this->set_data($data);

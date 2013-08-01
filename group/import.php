@@ -55,11 +55,13 @@ $mform_post = new groups_import_form(null, array('id'=>$id));
 if ($mform_post->is_cancelled()) {
     redirect($returnurl);
 
-} else if ($mform_post->get_data()) {
+} else if ($data = $mform_post->get_data()) {
     echo $OUTPUT->header();
 
     $csv_encode = '/\&\#44/';
-    if (isset($CFG->CSV_DELIMITER)) {
+    if (!empty($data->separator)) {
+        $csv_delimiter = $data->separator;
+    } else if (isset($CFG->CSV_DELIMITER)) {
         $csv_delimiter = $CFG->CSV_DELIMITER;
 
         if (isset($CFG->CSV_ENCODE)) {
@@ -74,12 +76,13 @@ if ($mform_post->is_cancelled()) {
 
     $rawlines = explode("\n", $text);
     unset($text);
+    $errortext = $rawlines[0];
+    $errors = false;
 
     // make arrays of valid fields for error checking
     $required = array("groupname" => 1);
     $optionalDefaults = array("lang" => 1);
     $optional = array("coursename" => 1,
-            "idnumber" => 1,
             "groupidnumber" => 1,
             "description" => 1,
             "enrolmentkey" => 1,
@@ -88,11 +91,30 @@ if ($mform_post->is_cancelled()) {
         );
 
     // --- get header (field names) ---
-    $header = explode($csv_delimiter, array_shift($rawlines));
+    $header = explode($csv_delimiter, strtolower(array_shift($rawlines)));
+
+    $fieldslikeidnumber = array ('/^useridnumber$/i',
+                                '/^matrikelnr$/i',
+                                 '/^matrikel nr$/i',
+                                 '/^idnumber$/i',
+                                 '/^id number$/i',
+                                );
+    $fieldslikeusername = array ('/^user$/i',
+                                 '/^username$/i',
+                                 '/^kennung$/i',
+                                );
+
+    $fieldslikegroupname = '/^group$/i';
+
     // check for valid field names
     foreach ($header as $i => $h) {
-        $h = trim($h); $header[$i] = $h; // remove whitespace
-        if (!(isset($required[$h]) or isset($optionalDefaults[$h]) or isset($optional[$h]))) {
+        $header[$i] = trim($h,' "\''); // remove whitespace and quotes
+        $header[$i] = preg_replace($fieldslikeidnumber, 'memberid', trim($header[$i]));
+        $header[$i] = preg_replace($fieldslikeusername, 'member', trim($header[$i]));
+        $header[$i] = preg_replace($fieldslikegroupname, 'groupname', trim($header[$i]));
+        $h = $header[$i];
+
+        if (!(isset($required[$h]) or isset($optionalDefaults[$h]) or isset($optional[$h]) or $h=='member' or $h=='memberid')) {
                 print_error('invalidfieldname', 'error', 'import.php?id='.$id, $h);
             }
         if (isset($required[$h])) {
@@ -125,6 +147,7 @@ if ($mform_post->is_cancelled()) {
 
             // add fields to object $user
             foreach ($record as $name => $value) {
+                $value = trim($value,' "\''); // remove whitespace and quotes
                 // check for required values
                 if (isset($required[$name]) and !$value) {
                     print_error('missingfield', 'error', 'import.php?id='.$id, $name);
@@ -155,7 +178,6 @@ if ($mform_post->is_cancelled()) {
                 } else {
                     $newgroup->courseid = $mycourse->id;
                 }
-
             } else {
                 //else use use current id
                 $newgroup->courseid = $id;
@@ -194,8 +216,10 @@ if ($mform_post->is_cancelled()) {
                     }
                     if ($groupid = groups_get_group_by_name($newgroup->courseid, $groupname)) {
                         echo $OUTPUT->notification("$groupname :".get_string('groupexistforcourse', 'error', $groupname));
+                        $adduser = true;
                     } else if ($groupid = groups_create_group($newgroup)) {
                         echo $OUTPUT->notification(get_string('groupaddedsuccesfully', 'group', $groupname), 'notifysuccess');
+                        $adduser = true;
                     } else {
                         echo $OUTPUT->notification(get_string('groupnotaddederror', 'error', $groupname));
                         continue;
@@ -215,7 +239,6 @@ if ($mform_post->is_cancelled()) {
                                 continue;
                             }
                         }
-
                         // if we have reached here we definitely have a groupingid
                         $a = array('groupname' => $groupname, 'groupingname' => $groupingname);
                         try {
@@ -224,12 +247,54 @@ if ($mform_post->is_cancelled()) {
                         } catch (Exception $e) {
                             echo $OUTPUT->notification(get_string('groupnotaddedtogroupingerror', 'error', $a));
                         }
+                    }
 
+                    //If there is userdata, add them to the group
+                    if ($adduser) {
+                        if ((!empty($newgroup->memberid) && $newmember = $DB->get_record( 'user',Array('idnumber'=>$newgroup->memberid)))) {
+                            $valid_user_param = $newgroup->memberid;
+                        } else if (!empty($newgroup->member) && $newmember = $DB->get_record( 'user',Array('username'=>$newgroup->member))) {
+                            $valid_user_param = $newgroup->member;
+                        } else {
+                            $adduser = false;
+                        }
+
+                        if ($adduser) {
+                            $gid = groups_get_group_by_name($newgroup->courseid, $groupname);
+                            $groups = groups_get_user_groups($newgroup->courseid, $newmember->id);
+                            //Permissions check
+                            if(!has_capability('moodle/course:managegroups', $context)) {
+                                echo $OUTPUT->notification(get_string('nopermission'));
+                                $errors = true;
+                                $errortext .= "\n".$rawline;
+                            } else if(in_array($gid,$groups['0'])) {
+                                echo $OUTPUT->notification(get_string('groupmembershipexists', 'group', array('name'=>$newgroup->name,'member'=>$valid_user_param) ));
+                            } else if(!groups_add_member($gid, $newmember->id)) {
+                                if(!is_enrolled(get_context_instance(CONTEXT_COURSE, $newgroup->courseid), $newmember->id)) {
+                                    echo $OUTPUT->notification(get_string('notenrolledincourse', 'group', array('name'=>$newgroup->name,'member'=>$valid_user_param) ));
+                                    $errors = true;
+                                    $errortext .= "\n".$rawline;
+                                } else {
+                                    echo $OUTPUT->notification(get_string('groupmembershipfailed', 'group', array('name'=>$newgroup->name,'member'=>$valid_user_param) ));
+                                    $errors = true;
+                                    $errortext .= "\n".$rawline;
+                                }
+                            } else {
+                                echo $OUTPUT->notification(get_string('groupmembershipadded', 'group', array('name'=>$newgroup->name, 'member'=>$valid_user_param)), 'notifysuccess' );
+                            }
+                        } else {
+                            echo $OUTPUT->notification(get_string('usernotfoundskip', 'group', array('name'=>$newgroup->name,'member'=>$valid_user_param)));
+                            $errors = true;
+                            $errortext .= "\n".$rawline;
+                        }
                     }
                 }
             }
             unset ($newgroup);
         }
+    }
+    if ($errors) {
+        echo $OUTPUT->box("<b>Errors in:</b><p><pre>".$errortext."</pre></p>");
     }
 
     echo $OUTPUT->single_button($returnurl, get_string('continue'), 'get');

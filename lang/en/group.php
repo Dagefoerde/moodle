@@ -134,13 +134,36 @@ $string['groupsvisible'] = 'Visible groups';
 $string['grouptemplate'] = 'Group @';
 $string['hidepicture'] = 'Hide picture';
 $string['importgroups'] = 'Import groups';
-$string['importgroups_help'] = 'Groups may be imported via text file. The format of the file should be as follows:
+$string['groupmembershipexists'] = 'User {$a->member} is already a member of group {$a->name}';
+$string['groupmembershipadded'] = 'User {$a->member} added as a member of group {$a->name}';
+$string['groupmembershipfailed'] = 'Unable to add {$a->member} as a member of group {$a->name}';
+$string['notenrolledincourse'] = 'User {$a->member} is not enrolled in this course';
+$string['usernotfoundskip'] = 'User {$a->member} skipped: user not found or invalid userid';
+$string['importgroups_help'] = 'Groups may be imported via text file (CSV). The format of the file should be as follows:
 
 * Each line of the file contains one record
-* Each record is a series of data separated by commas
+* Each record is a series of data (field values) separated by commas
 * The first record contains a list of fieldnames defining the format of the rest of the file
 * Required fieldname is groupname
-* Optional fieldnames are groupidnumber, description, enrolmentkey, groupingname, enablemessaging';
+* Optional fieldnames are coursename, groupidnumber, description, enrolmentkey, username, useridnumber, groupingname, enablemessaging
+
+If coursename field is not set, current course is used.
+If username and useridnumber are set, useridnumber will be preferred.
+
+These fields that are automatically detected as being:
+
+ * groupname: groupname, group
+ * username: user, username, kennung
+ * useridnumber: useridnumber, matrikelnr, idnumber
+
+This tool will create new groups if they don\'t already exist. If userid is set it will not only create new groups but may be used to automatically assign users to groups. Users must exist and be enrolled in the course.
+
+Sample CSV file:
+<pre>coursename,user,group
+CF101Eng,m_must01,Group1
+CF101Eng,m_must02,Group2
+CF101Eng,m_must03,Group2</pre>
+';
 $string['importgroups_link'] = 'group/import';
 $string['includeonlyactiveenrol'] = 'Include only active enrolments';
 $string['includeonlyactiveenrol_help'] = 'If enabled, suspended users will not be included in groups.';
