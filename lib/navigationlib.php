@@ -1333,7 +1333,16 @@ class global_navigation extends navigation_node {
         } else {
             $this->rootnodes['courses']->isexpandable = true;
         }
-        $this->rootnodes['mycourses']->forceopen = true;
+
+        // Load the users enrolled courses if they are viewing the My Moodle page AND the admin has not
+        // set that they wish to keep the My Courses branch collapsed by default.
+        if ((!empty($CFG->navexpandmycourses) && $this->page->pagelayout === 'mydashboard') || ($enrolledinanycourse && $this->page->course->id == $SITE->id)){
+            $this->load_courses_enrolled();
+            $this->rootnodes['mycourses']->forceopen = true;
+        } else {
+            $this->rootnodes['mycourses']->collapse = true;
+            $this->rootnodes['mycourses']->make_inactive();
+        }
 
         $canviewcourseprofile = true;
 
