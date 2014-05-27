@@ -78,6 +78,8 @@ if (empty($preferences['newemailattemptsleft'])) {
     $authplugin = get_auth_plugin($user->auth);
     $authplugin->user_update($olduser, $user);
     user_update_user($user, false);
+    //MDL-34423: change $USER mail address within session
+    $USER->email = $user->email;
     $a->email = $user->email;
     redirect(
         new moodle_url('/user/view.php', ['id' => $user->id]),

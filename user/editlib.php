@@ -284,7 +284,7 @@ function useredit_shared_definition(&$mform, $editoroptions, $filemanageroptions
         $notice = get_string('emailchangepending', 'auth', $user);
         $notice .= '<br /><a href="edit.php?cancelemailchange=1&amp;id='.$user->id.'">'
                 . get_string('emailchangecancel', 'auth') . '</a>';
-        $mform->addElement('static', 'emailpending', get_string('email'), $notice);
+        $mform->addElement('static', 'emailpending', get_string('email'), '<div class="notifyproblem">' . $notice . '</div>');
     } else {
         $purpose = user_edit_map_field_purpose($user->id, 'email');
         $mform->addElement('text', 'email', get_string('email'), 'maxlength="100" size="30"' . $purpose);
