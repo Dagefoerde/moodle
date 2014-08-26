@@ -430,8 +430,8 @@ class enrol_database_plugin extends enrol_plugin {
                     // Course not synced or duplicate.
                     continue;
                 }
-                $course->enrolid = $this->add_instance($course);
-                $existing[$course->mapping] = $course;
+                //$course->enrolid = $this->add_instance($course);
+                //$existing[$course->mapping] = $course;
                 unset($externalcourses[$course->mapping]);
             }
             $rs->close();
