@@ -91,7 +91,11 @@ mtrace("Server Time: ".date('r',$timenow)."\n\n");
 // Run automated backups if required.
 require_once($CFG->dirroot.'/backup/util/includes/backup_includes.php');
 require_once($CFG->dirroot.'/backup/util/helper/backup_cron_helper.class.php');
-backup_cron_automated_helper::run_automated_backup(backup_cron_automated_helper::RUN_IMMEDIATELY);
+// changed by cusen_01: RUN_IMMEDIATELY leads to backup of all courses, 
+// whereas RUN_ON_SCHEDULE limits to changed courses only
+//$rundirective changed from backup_cron_automated_helper::RUN_IMMEDIATELY to RUN_ON_SCHEDULE
+$rundirective = backup_cron_automated_helper::RUN_ON_SCHEDULE;
+backup_cron_automated_helper::run_automated_backup($rundirective);
 
 mtrace("Automated cron backups completed correctly");
 
