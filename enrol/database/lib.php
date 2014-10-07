@@ -66,6 +66,14 @@ class enrol_database_plugin extends enrol_plugin {
     }
 
     /**
+     * Users may manually change roles assigned by this plugin. (overwrites default behaviour)
+     * @return bool - false means anybody may tweak roles, it does not use itemid and component when assigning roles
+     */
+    public function roles_protected() {
+        return false;
+    }
+
+    /**
      * Does this plugin allow manual unenrolment of a specific user?
      * Yes, but only if user suspended...
      *
