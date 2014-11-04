@@ -608,7 +608,7 @@ class core_admin_renderer extends plugin_renderer_base {
 
         $check = new \tool_task\check\cronrunning();
         $result = $check->get_result();
-        return $this->warning($result->get_summary() . '&nbsp;' . $this->help_icon('cron', 'admin'));
+        return $this->warning($result->get_summary() . '&nbsp;' . $this->help_icon('cron', 'admin'), 'error');
     }
 
     /**
