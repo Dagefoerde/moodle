@@ -1336,13 +1336,14 @@ class global_navigation extends navigation_node {
 
         // Load the users enrolled courses if they are viewing the My Moodle page AND the admin has not
         // set that they wish to keep the My Courses branch collapsed by default.
-        if ((!empty($CFG->navexpandmycourses) && $this->page->pagelayout === 'mydashboard') || ($enrolledinanycourse && $this->page->course->id == $SITE->id)){
+// WWU @t_reis06: my courses always forceopen since it is needed by the essentials theme
+//        if ((!empty($CFG->navexpandmycourses) && $this->page->pagelayout === 'mydashboard') || ($enrolledinanycourse && $this->page->course->id == $SITE->id)){
             $this->load_courses_enrolled();
             $this->rootnodes['mycourses']->forceopen = true;
-        } else {
-            $this->rootnodes['mycourses']->collapse = true;
-            $this->rootnodes['mycourses']->make_inactive();
-        }
+//        } else {
+//            $this->rootnodes['mycourses']->collapse = true;
+//            $this->rootnodes['mycourses']->make_inactive();
+//        }
 
         $canviewcourseprofile = true;
 
