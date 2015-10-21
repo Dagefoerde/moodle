@@ -405,7 +405,8 @@ function choice_user_submit_response($formanswer, $choice, $userid, $course, $cm
         $answers = $DB->get_records_sql($sql, $params);
         if ($answers) {
             foreach ($answers as $a) { //only return enrolled users.
-                if (is_enrolled($context, $a->userid, 'mod/choice:choose')) {
+                //  WWU @j_dage01: Skip the is_enrolled check, as it is a) slow and b) useless. Count choice in any case!
+                if (true || is_enrolled($context, $a->userid, 'mod/choice:choose')) {
                     $countanswers[$a->optionid]++;
                 }
             }
