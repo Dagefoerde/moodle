@@ -1567,7 +1567,7 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
      * @return core_course_list_element[]
      */
     public static function search_courses($search, $options = array(), $requiredcapabilities = array()) {
-        global $DB;
+        global $CFG, $DB;
         $offset = !empty($options['offset']) ? $options['offset'] : 0;
         $limit = !empty($options['limit']) ? $options['limit'] : null;
         $sortfields = !empty($options['sort']) ? $options['sort'] : array('sortorder' => 1);
@@ -1628,6 +1628,8 @@ class core_course_category implements renderable, cacheable_object, IteratorAggr
             $courselist = get_courses_search($searchterms, 'c.sortorder ASC', 0, 9999999, $totalcount,
                 $requiredcapabilities, $searchcond, $searchcondparams);
             self::sort_records($courselist, $sortfields);
+            require_once($CFG->libdir. '/../blocks/sem_course_overview/locallib.php');
+            block_sem_course_overview_sort_courses($courselist,false);
             $coursecatcache->set($cachekey, array_keys($courselist));
             $coursecatcache->set($cntcachekey, $totalcount);
             $records = array_slice($courselist, $offset, $limit, true);

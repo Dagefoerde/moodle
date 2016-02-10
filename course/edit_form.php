@@ -276,12 +276,21 @@ class course_edit_form extends moodleform {
 
         // Handle non-existing $course->maxbytes on course creation.
         $coursemaxbytes = !isset($course->maxbytes) ? null : $course->maxbytes;
-
+        
+        //Teachers should only be able to configure up to a certain limit
+        $maximumbytes = (!($course->maxbytes === null) && $course->maxbytes > $courseconfig->maxbytes) ? $course->maxbytes : $courseconfig->maxbytes;
+        if(is_siteadmin())
+            $maximumbytes = 0;
+        
         // Let's prepare the maxbytes popup.
-        $choices = get_max_upload_sizes($CFG->maxbytes, 0, 0, $coursemaxbytes);
+        $choices = get_max_upload_sizes($CFG->maxbytes, $maximumbytes, 0, $coursemaxbytes);
         $mform->addElement('select', 'maxbytes', get_string('maximumupload'), $choices);
         $mform->addHelpButton('maxbytes', 'maximumupload');
         $mform->setDefault('maxbytes', $courseconfig->maxbytes);
+        //Make maxbytes editable only for admin (cusen_01)
+        if ($course->maxbytes > $courseconfig->maxbytes && !is_siteadmin()) {
+            $mform->disabledIf('id_maxbytes','numsections','neq',-1);
+        }
 
         // Completion tracking.
         if (completion_info::is_enabled_for_site()) {

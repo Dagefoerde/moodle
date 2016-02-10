@@ -85,9 +85,10 @@ class course_request_form extends moodleform {
         $mform->addRule('reason', get_string('missingreqreason'), 'required', null, 'client');
         $mform->setType('reason', PARAM_TEXT);
         
-        $mform->addElement('header', 'header', get_string('pluginname', 'enrol_self'));
+        $mform->addElement('header', 'self_enrol_header', get_string('pluginname', 'enrol_self'));
         $mform->addElement('passwordunmask', 'password', get_string('password', 'enrol_self'));
         $mform->addHelpButton('password', 'config_enrolment_key','local_lsf_unification');
+        $mform->setExpanded('self_enrol_header');
 
         $this->add_action_buttons(true, get_string('requestcourse'));
     }

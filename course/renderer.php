@@ -704,6 +704,8 @@ class core_course_renderer extends plugin_renderer_base {
         // has already been encoded for display (puke).
         $onclick = htmlspecialchars_decode($mod->onclick, ENT_QUOTES);
 
+        $onclick = preg_replace('/(window.open\(\')([^\']+)(\')/i', '\1'.$url."&redirect=1".'\3', $onclick);
+
         // Display link itself.
         $activitylink = html_writer::empty_tag('img', array('src' => $mod->get_icon_url(),
                 'class' => 'iconlarge activityicon', 'alt' => '', 'role' => 'presentation', 'aria-hidden' => 'true')) .
