@@ -186,8 +186,9 @@ class enrol_database_plugin extends enrol_plugin {
                         continue;
                     }
 
-                    $enrolid = $this->add_instance($course);
-                    $instances[$course->id] = $DB->get_record('enrol', array('id'=>$enrolid));
+                    // These lines have to be commented out, because they automatically create an ext.enrolment instance for every course - we want to enable the teacher to decide whether he wants this mode of enrolment. Therefore instances must be deletable and must not be created automatically.
+                    // $enrolid = $this->add_instance($course);
+                    // $instances[$course->id] = $DB->get_record('enrol', array('id'=>$enrolid));
                 }
             }
             $rs->Close();
@@ -1076,5 +1077,56 @@ class enrol_database_plugin extends enrol_plugin {
         ini_set('display_errors', $olddisplay);
         error_reporting($CFG->debug);
         ob_end_flush();
+    }
+
+    /**
+     * Returns link to page which may be used to add new instance of enrolment plugin in course.
+     * 
+     * @param int $courseid
+     * @return moodle_url page url
+     */
+    public function get_newinstance_link($courseid) {
+        global $DB;
+
+        $context = context_course::instance($courseid, MUST_EXIST);
+
+        if (!has_capability('moodle/course:enrolconfig', $context)) {
+            return NULL;
+        }
+
+        if ($DB->record_exists('enrol', array('courseid' => $courseid, 'enrol' => 'database' ))) {
+            return NULL;
+        }
+
+        return new moodle_url('/enrol/database/addinstance.php', array('sesskey' => sesskey(), 'id' => $courseid));
+    }
+
+    /**
+     * Add new instance of enrol plugin with default settings.
+     * 
+     * @param stdClass $course
+     * @return int id of new instance, null if can not be created
+     */
+    public function add_default_instance($course) {
+        $fields = array('ignoredenrolments' => "");
+        return $this->add_instance($course, $fields);
+    }
+
+    /**
+     * Add new instance of enrol plugin.
+     * 
+     * @param stdClass $course
+     * @param array instance fields
+     * @return int id of new instance, null if can not be created
+     */
+    public function add_instance($course, array $fields = NULL) {
+        global $DB;
+
+        if ($DB->record_exists('enrol', array('courseid' => $course->id, 'enrol' => 'database'))) {
+            // only one instance allowed, sorry
+            return NULL;
+        }
+
+        return parent::add_instance($course, $fields);
     }
 }
