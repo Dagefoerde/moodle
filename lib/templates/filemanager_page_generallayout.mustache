@@ -27,6 +27,9 @@
     }
 }}
 <div id="filemanager-{{{client_id}}}" class="filemanager w-100 fm-loading">
+    <div class="warning" style="padding-right:6%;padding-left:16%;">
+        {{#str}}warning, repository{{/str}}
+    </div>
     <div class="fp-restrictions">
         {{{restrictions}}}
         <span class="dnduploadnotsupported-message"> - {{#str}}dndnotsupported_insentence{{/str}}{{{helpicon}}}</span>
