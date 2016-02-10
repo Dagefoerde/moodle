@@ -26,6 +26,7 @@ namespace core_calendar\local\event\forms;
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/formslib.php');
+require_once($CFG->dirroot.'/local/lsf_unification/cal_lib.php');
 
 /**
  * Form for adding a subscription to a Moodle course calendar.
@@ -46,6 +47,8 @@ class managesubscriptions extends \moodleform {
         if (in_array(true, $eventtypes, true) === false) {
             print_error('nopermissiontoupdatecalendar');
         }
+
+        his_print_cal_import_form($mform);
 
         $mform->addElement('header', 'addsubscriptionform', get_string('importcalendarheading', 'calendar'));
 

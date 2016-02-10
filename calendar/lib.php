@@ -3119,7 +3119,13 @@ function calendar_update_subscription_events($subscriptionid) {
         return 'File subscription not updated.';
     }
 
-    $ical = calendar_get_icalendar($sub->url);
+    global $CFG;
+    require_once($CFG->dirroot.'/local/lsf_unification/cal_lib.php');
+    if ($sub->url == HIS_CAL_IDENTIFIER) {
+        $ical = calendar_get_icalendar(his_get_ical_url($sub->userid));
+    } else {
+        $ical = calendar_get_icalendar($sub->url);
+    }
     $return = calendar_import_icalendar_events($ical, null, $subscriptionid);
     $sub->lastupdated = time();
 
