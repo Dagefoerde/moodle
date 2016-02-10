@@ -24,6 +24,7 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+require_once($CFG->dirroot . '/blocks/sem_course_overview/lib.php');
 
 /**
  * The name that will be used to separate the navigation cache within SESSION
@@ -2659,8 +2660,10 @@ class global_navigation extends navigation_node {
         } else if ($coursetype == self::COURSE_MY && !$forcegeneric) {
             if (!empty($CFG->navshowmycoursecategories) && ($parent = $this->rootnodes['mycourses']->find($course->category, self::TYPE_MY_CATEGORY))) {
                 // Nothing to do here the above statement set $parent to the category within mycourses.
-            } else {
-                $parent = $this->rootnodes['mycourses'];
+            }
+            else {
+                // Insert a semesternode
+                $parent = getSemesterNode($this->rootnodes['mycourses'], $course);
             }
             $url = new moodle_url('/course/view.php', array('id'=>$course->id));
         } else {
@@ -3073,6 +3076,8 @@ class global_navigation extends navigation_node {
         // Get the number of courses we are going to show for each.
         $numshowncourses = count($courses);
         $numshownflatnavcourses = count($flatnavcourses);
+        // Sort myCourses before adding, to have a proper ordered List. EDIT BY cusen_01
+        courseSort($courses);
         if ($numshowncourses && $this->show_my_categories()) {
             // Generate an array containing unique values of all the courses' categories.
             $categoryids = array();

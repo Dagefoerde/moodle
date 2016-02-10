@@ -58,10 +58,22 @@ class block_login extends block_base {
         $this->content->text = '';
 
         if (!isloggedin() or isguestuser()) {   // Show the block
+
             if (empty($CFG->authloginviaemail)) {
                 $strusername = get_string('username');
             } else {
                 $strusername = get_string('usernameemail');
+            }
+
+            $wwwhost = htmlentities(selfmsp($clientgiven= true));
+            if ($ssofield = (stripos($wwwhost,"www") !== FALSE && stripos($CFG->wwwroot,$wwwhost) !== FALSE)) {
+                $this->content->text .= '<h3>'. get_string('heading_login_via_sso', $component = 'auth_sso').'</h3>';
+                $this->content->text .= '<div class="desc">'.get_string('login_via_sso_desc_short', $component = 'auth_sso').'</div>';
+                $this->content->text .= '<form class="loginform clear" id="ssologin" method="post" action="'.
+                                        str_ireplace($wwwhost,'https://sso.uni-muenster.de',get_login_url()).'">';
+                $this->content->text .= '<div class="c1 btn"><input type="submit" value="'.get_string('loginSSO', $component='auth_sso').'" /></div>';
+                $this->content->text .= "</form>\n";
+                $this->content->text .= '<div class="abstand"></div><h3>'.get_string('heading_login_usual_way', $component = 'auth_sso').'</h3>';
             }
 
             $this->content->text .= "\n".'<form class="loginform" id="login" method="post" action="'.get_login_url().'">';
