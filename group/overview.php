@@ -33,6 +33,7 @@ define('OVERVIEW_GROUPING_NO_GROUP', -2); // The fake grouping for users with no
 $courseid   = required_param('id', PARAM_INT);
 $groupid    = optional_param('group', 0, PARAM_INT);
 $groupingid = optional_param('grouping', 0, PARAM_INT);
+$download   = optional_param('download', '', PARAM_ALPHA);
 
 $returnurl = $CFG->wwwroot.'/group/index.php?id='.$courseid;
 $rooturl   = $CFG->wwwroot.'/group/overview.php?id='.$courseid;
@@ -179,6 +180,7 @@ if ($groupid <= 0 && $groupingid <= 0) {
     }
 }
 
+if (!$download) {
 navigation_node::override_active_url(new moodle_url('/group/index.php', array('id'=>$courseid)));
 $PAGE->navbar->add(get_string('overview', 'group'));
 
@@ -289,6 +291,200 @@ foreach ($members as $gpgid=>$groupdata) {
     }
     echo html_writer::table($table);
     $printed = true;
+}
+}
+if ($download == "ods" && has_capability('moodle/course:managegroups', $context)) {
+    require_once("$CFG->libdir/odslib.class.php");
+
+    /// Calculate file name
+    $filename = clean_filename("$course->shortname " . strip_tags(format_string($courseid, true))) . '.ods';
+    /// Creating a workbook
+    $workbook = new MoodleODSWorkbook("-");
+    /// Send HTTP headers
+    $workbook->send($filename);
+    /// Creating the first worksheet
+    $myxls = & $workbook->add_worksheet($strresponses);
+    /// Print names of all the fields
+    $myxls->write_string(0, 0, get_string('grouping', 'group'));
+    $myxls->write_string(0, 1, get_string("group"));
+    $myxls->write_string(0, 2, get_string("idnumber"));
+    $myxls->write_string(0, 3, get_string("username"));
+    $myxls->write_string(0, 4, get_string("lastname"));
+    $myxls->write_string(0, 5, get_string("firstname"));
+
+
+    /// generate the data for the body of the spreadsheet
+    $row = 1;
+    foreach ($members as $gpgid => $groupdata) {
+
+        if ($gpgid < 0) {
+            $groupname = $strnotingrouping;
+        } else {
+            $groupname = format_string($groupings[$gpgid]->name);
+        }
+        // $row++;
+
+        if ($groupingid and $groupingid != $gpgid) {
+            continue; // do not show
+        }
+        foreach ($groupdata as $gpid => $users) {
+            if ($groupid and $groupid != $gpid) {
+                continue;
+            }
+            $name = format_string($groups[$gpid]->name);
+
+            foreach ($users as $user) {
+                $myxls->write_string($row, 0, $groupname);
+                $myxls->write_string($row, 1, $name);
+                $studentid = (!empty($user->idnumber) ? $user->idnumber : " ");
+                $myxls->write_string($row, 2, $studentid);
+                $myxls->write_string($row, 3, $user->username);
+                $myxls->write_string($row, 4, $user->lastname);
+                $myxls->write_string($row, 5, $user->firstname);
+                $row++;
+            }
+        }
+        if ($groupid and empty($groupdata)) {
+            continue;
+        }
+
+    }
+    /// Close the workbook
+    $workbook->close();
+
+    exit;
+}
+
+//print spreadsheet if one is asked for:
+if ($download == "xls" && has_capability('moodle/course:managegroups', $context)) {
+    require_once("$CFG->libdir/excellib.class.php");
+
+    /// Calculate file name
+    $filename = clean_filename("$course->shortname " . strip_tags(format_string($courseid, true))) . '.xls';
+    /// Creating a workbook
+    $workbook = new MoodleExcelWorkbook("-");
+    /// Send HTTP headers
+    $workbook->send($filename);
+    /// Creating the first worksheet
+    $myxls = & $workbook->add_worksheet($strresponses);
+
+    /// Print names of all the fields
+    $myxls->write_string(0, 0, get_string('grouping', 'group'));
+    $myxls->write_string(0, 1, get_string("group"));
+    $myxls->write_string(0, 2, get_string("idnumber"));
+    $myxls->write_string(0, 3, get_string("username"));
+    $myxls->write_string(0, 4, get_string("lastname"));
+    $myxls->write_string(0, 5, get_string("firstname"));
+
+
+    /// generate the data for the body of the spreadsheet
+    $row = 1;
+    foreach ($members as $gpgid => $groupdata) {
+        $groupname = '';
+        if ($gpgid < 0) {
+            $groupname = $strnotingrouping;
+        } else {
+            $groupname = format_string($groupings[$gpgid]->name);
+        }
+        if ($groupingid and $groupingid != $gpgid) {
+            continue; // do not show
+        }
+        foreach ($groupdata as $gpid => $users) {
+            if ($groupid and $groupid != $gpid) {
+                continue;
+            }
+            $name = format_string($groups[$gpid]->name);
+            foreach ($users as $user) {
+                $myxls->write_string($row, 0, $groupname);
+                $myxls->write_string($row, 1, $name);
+                $studentid = (!empty($user->idnumber) ? $user->idnumber : " ");
+                $myxls->write_string($row, 2, $studentid);
+                $myxls->write_string($row, 3, $user->username);
+                $myxls->write_string($row, 4, $user->lastname);
+                $myxls->write_string($row, 5, $user->firstname);
+                $row++;
+            }
+        }
+        if ($groupid and empty($groupdata)) {
+            continue;
+        }
+
+    }
+
+    /// Close the workbook
+    $workbook->close();
+    exit;
+}
+
+// print text file
+if ($download == "txt" && has_capability('moodle/course:managegroups', $context)) {
+    $filename = clean_filename("$course->shortname " . strip_tags(format_string($courseid, true))) . '.txt';
+
+    header("Content-Type: application/download\n");
+    header("Content-Disposition: attachment; filename=\"$filename\"");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate,post-check=0,pre-check=0");
+    header("Pragma: public");
+
+    /// Print names of all the fields
+
+    echo $strgrouping."\t".get_string('group'). "\t" . get_string('idnumber') . "\t" . get_string('username') . "\t";
+    echo get_string("firstname") . "\t" . get_string("lastname") . "\t" . "\n";
+
+    foreach ($members as $gpgid => $groupdata) {
+         
+        if ($gpgid < 0) {
+            $grouping =  $strnotingrouping ;
+        } else {
+            $grouping =  format_string($groupings[$gpgid]->name);
+        }
+
+        if ($groupingid and $groupingid != $gpgid) {
+            continue; // do not show
+        }
+        foreach ($groupdata as $gpid => $users) {
+            if ($groupid and $groupid != $gpid) {
+                continue;
+            }
+            $name = format_string($groups[$gpid]->name);
+
+            foreach ($users as $user) {
+                echo $grouping . "\t";
+                echo $name . "\t";
+                echo $user->idnumber . "\t";
+                echo $user->username . "\t";
+                echo $user->firstname . "\t";
+                echo $user->lastname . "\t";
+                echo "\n";
+            }
+        }
+        if ($groupid and empty($groupdata)) {
+            continue;
+        }
+
+    }
+    exit;
+}
+
+//now give links for downloading spreadsheets.
+if (!empty($user) && has_capability('moodle/course:managegroups', $context)) {
+    echo "<br />\n";
+    echo "<table class=\"downloadreport\"><tr>\n";
+    echo "<td>";
+    $options = array();
+    $options["id"] = "$courseid";
+    $options["group"] = "$groupid";
+    $options["grouping"] = "$groupingid";
+    $options["download"] = "ods";
+    echo $OUTPUT->single_button(new moodle_url('overview.php', $options) , get_string("downloadods"));
+    echo "</td><td>";
+    $options["download"] = "xls";
+    echo $OUTPUT->single_button(new moodle_url('overview.php', $options) , get_string("downloadexcel"));
+    echo "</td><td>";
+    $options["download"] = "txt";
+    echo $OUTPUT->single_button(new moodle_url('overview.php', $options) , get_string("downloadtext"));
+     
+    echo "</td></tr></table>";
 }
 
 if (count($hoverevents)>0) {
