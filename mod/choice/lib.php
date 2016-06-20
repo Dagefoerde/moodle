@@ -332,10 +332,8 @@ function choice_user_submit_response($formanswer, $choice, $userid, $course, $cm
 
         $answers = $DB->get_records_sql($sql, $params);
         if ($answers) {
-            foreach ($answers as $a) { //only return enrolled users.
-                if (is_enrolled($context, $a->userid, 'mod/choice:choose')) {
-                    $countanswers[$a->optionid]++;
-                }
+            foreach ($answers as $a) {
+                $countanswers[$a->optionid]++;
             }
         }
         foreach ($countanswers as $opt => $count) {
