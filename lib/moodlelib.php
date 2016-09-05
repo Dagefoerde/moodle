@@ -2687,6 +2687,11 @@ function require_login($courseorid = null, $autologinguest = true, $cm = null, $
             throw new require_login_session_timeout_exception();
         } else {
             if ($setwantsurltome) {
+                // t_reis06@WWU: Stores the mywwu parameter in the current page url if present.
+                $isMyWWU = optional_param('mywwu', 0, PARAM_INT);
+                if ($isMyWWU || (array_key_exists("mywwu", $_SESSION) && $_SESSION["mywwu"])) {
+                    $PAGE->url->param('mywwu',1);
+                }
                 $SESSION->wantsurl = qualified_me();
             }
             redirect(get_login_url());
@@ -2712,6 +2717,11 @@ function require_login($courseorid = null, $autologinguest = true, $cm = null, $
             }
 
             if ($setwantsurltome) {
+                // t_reis06@WWU: Stores the mywwu parameter in the current page url if present.
+                $isMyWWU = optional_param('mywwu', 0, PARAM_INT);
+                if ($isMyWWU || (array_key_exists("mywwu", $_SESSION) && $_SESSION["mywwu"])) {
+                    $PAGE->url->param('mywwu',1);
+                }
                 $SESSION->wantsurl = qualified_me();
             }
 
