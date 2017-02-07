@@ -1,0 +1,82 @@
+[submodule "mod/cas"]
+	path = mod/cas
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/javacas.git
+[submodule "mod/questionnaire"]
+	path = mod/questionnaire
+	url = https://github.com/remotelearner/moodle-mod_questionnaire.git
+[submodule "local/lsf_unification"]
+	path = local/lsf_unification
+	url = git@github.com:learnweb/his_unification
+[submodule "mod/journal"]
+	path = mod/journal
+	url = https://github.com/dmonllao/moodle-mod_journal.git
+	branch = master
+[submodule "mod/ratingallocate"]
+	path = mod/ratingallocate
+	url = git@github.com:learnweb/moodle-mod_ratingallocate.git
+[submodule "blocks/visual_library"]
+	path = blocks/visual_library
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-block_visual_library.git
+[submodule "auth/sso"]
+	path = auth/sso
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-auth_sso.git
+[submodule "blocks/sem_course_overview"]
+	path = blocks/sem_course_overview
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-block_sem_course_overview.git
+[submodule "theme/essential"]
+	path = theme/essential
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-theme_essential.git
+	branch = production3_7
+[submodule "local/marketing"]
+	path = local/marketing
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-local_marketing.git
+[submodule "report/moodleanalyst"]
+	path = report/moodleanalyst
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-report_moodleanalyst.git
+[submodule "blocks/groups"]
+	path = blocks/groups
+	url = git@github.com:learnweb/moodle-block_groups.git
+[submodule "auth/limitedaccess"]
+	path = auth/limitedaccess
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-auth_limitedaccess.git
+[submodule "filter/wwwsso"]
+	path = filter/wwwsso
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-filter_wwwsso.git
+[submodule "local/lsf_num_service"]
+	path = local/lsf_num_service
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-local_lsf_num_service.git
+[submodule "blocks/xp"]
+	path = blocks/xp
+	url = https://github.com/FMCorz/moodle-block_xp.git
+[submodule "availability/condition/xp"]
+	path = availability/condition/xp
+	url = https://github.com/FMCorz/moodle-availability_xp.git
+[submodule "blocks/evasys_sync"]
+	path = blocks/evasys_sync
+	url = git@github.com:learnweb/moodle-block_evasys_sync.git
+[submodule "mod/groupmembers"]
+	path = mod/groupmembers
+	url = git@github.com:learnweb/moodle-mod_groupmembers.git
+[submodule "blocks/course_overview"]
+	path = blocks/course_overview
+	url = https://github.com/learnweb/moodle-block_course_overview.git 
+	branch = learnweb
+[submodule "blocks/qrcode"]
+	path = blocks/qrcode
+	url = git@github.com:learnweb/moodle-block_qrcode.git	
+[submodule "admin/tool/opencast"]
+	path = admin/tool/opencast
+	url = git@github.com:unirz-tu-ilmenau/moodle-tool_opencast.git
+[submodule "blocks/opencast"]
+	path = blocks/opencast
+	url = git@github.com:unirz-tu-ilmenau/moodle-block_opencast.git
+[submodule "filter/opencast"]
+	path = filter/opencast
+	url = git@github.com:learnweb/moodle-filter_opencastfilter.git
+[submodule "repository/opencast"]
+	path = repository/opencast
+	url = git@github.com:unirz-tu-ilmenau/moodle-repository_opencast.git
+[submodule "admin/tool/lifecycle"]
+	path = admin/tool/lifecycle
+	url = git@github.com:learnweb/moodle-tool_lifecycle.git
+	branch = wwu/subplugin-config
