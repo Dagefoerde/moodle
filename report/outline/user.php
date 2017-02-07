@@ -105,7 +105,8 @@ $itemsprinted = false;
 
 foreach ($sections as $i => $section) {
 
-        if ($section->uservisible) { // prevent hidden sections in user activity. Thanks to Geoff Wilbert!
+        // WWU @j_dage01: do not show confidential data for privacy reasons.
+        if (false && $section->uservisible) { // prevent hidden sections in user activity. Thanks to Geoff Wilbert!
             // Check the section has modules/resources, if not there is nothing to display.
             if (!empty($modinfo->sections[$i])) {
                 $itemsprinted = true;
