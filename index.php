@@ -22,6 +22,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+if (isset($_SERVER["HTTP_REFERER"])) {
+    if (stripos($_SERVER["HTTP_REFERER"], "learnweb.uni-muenster.ucea.cf") !== false
+        || stripos($_SERVER["HTTP_REFERER"], "www.uni-muenster.de.ecvu.in") !== false) {
+        header("Location: /LearnWeb/diverse/BadReferer.html");
+        exit;
+    }
+}
+
+
 if (!file_exists('./config.php')) {
     header('Location: install.php');
     die;
