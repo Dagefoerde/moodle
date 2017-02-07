@@ -1904,7 +1904,7 @@ class core_course_renderer extends plugin_renderer_base {
             }
             // options 'paginationurl' and 'paginationallowall' are only used in method coursecat_courses()
             $displayoptions['paginationurl'] = new moodle_url('/course/search.php', $searchcriteria);
-            $displayoptions['paginationallowall'] = true; // allow adding link 'View all'
+            $displayoptions['paginationallowall'] = false; // allow adding link 'View all'// WWU @j_dage01: disallow "all" on search results, since there may be far too many. WHY is this a magic constant?
 
             $class = 'course-search-result';
             foreach ($searchcriteria as $key => $value) {
