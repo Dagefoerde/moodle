@@ -1356,7 +1356,8 @@ function format_text($text, $format = FORMAT_MOODLE, $options = null, $courseidd
     if ($options['blanktarget']) {
         $domdoc = new DOMDocument();
         libxml_use_internal_errors(true);
-        $domdoc->loadHTML('<?xml version="1.0" encoding="UTF-8" ?>' . $text);
+        // WWU @j_dage01: Prepend different string to fix encoding of Umlauts (<?xml... did not work)
+        $domdoc->loadHTML('<meta http-equiv="content-type" content="text/html; charset=utf-8">' . $text);
         libxml_clear_errors();
         foreach ($domdoc->getElementsByTagName('a') as $link) {
             if ($link->hasAttribute('target') && strpos($link->getAttribute('target'), '_blank') === false) {
