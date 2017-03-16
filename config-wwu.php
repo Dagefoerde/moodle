@@ -108,7 +108,6 @@ function initialize_further_configs($debug = false) {
         "enablealternativethemecolors4" => false,
         "enablealternativethemecolors5" => false,
         // Essential: Kopfbereich
-        "logo" => "hello",
         "headertitle" => 1,
         "navbartitle" => 0,
         "headertextcolor" => "#000000",
