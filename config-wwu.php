@@ -508,4 +508,3 @@ $CFG->divertallemailsto = 'elearnt@uni-muenster.de'; // NOT FOR PRODUCTION SERVE
 $CFG->alternativeupdateproviderurl = 'http://download.moodle.org/api/1.2/updates.php';
 
 }
-?>
