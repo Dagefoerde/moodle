@@ -1,4 +1,11 @@
 <?php
+// LDAP certificate validation is disabled for the following Host strings,
+// cf. lib/ldaplib.php         @WWU j_dage01
+$wwu_ignorecert = array(
+    'ldaps://uni-muenster.de:636',
+    'ldaps://wwu.de:636',
+);
+
 function selfmsp($clientgiven=false){
     $ssl = true; //$ssl=(strtoupper($_SERVER['HTTPS'])=='ON'); 
     if($clientgiven){

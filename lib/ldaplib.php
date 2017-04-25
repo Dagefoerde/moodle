@@ -180,6 +180,7 @@ function ldap_isgroupmember($ldapconnection, $userid, $group_dns, $member_attrib
  * @return mixed connection result or false.
  */
 function ldap_connect_moodle($host_url, $ldap_version, $user_type, $bind_dn, $bind_pw, $opt_deref, &$debuginfo, $start_tls=false) {
+    global $wwu_ignorecert;// WWU @j_dage01: s.u.
     if (empty($host_url) || empty($ldap_version) || empty($user_type)) {
         $debuginfo = 'No LDAP Host URL, Version or User Type specified in your LDAP settings';
         return false;
@@ -194,6 +195,11 @@ function ldap_connect_moodle($host_url, $ldap_version, $user_type, $bind_dn, $bi
         }
 
         $connresult = ldap_connect($server); // ldap_connect returns ALWAYS true
+
+        // WWU @j_dage01: Ignoriere (Hostnamen im) LDAP-Zertifikat, da ldaps://uni-muenster.de:636 nur Proxy.
+        if (in_array($server, $wwu_ignorecert)) {
+            ldap_set_option($connresult, LDAP_OPT_X_TLS_REQUIRE_CERT, LDAP_OPT_X_TLS_ALLOW);
+        }
 
         if (!empty($ldap_version)) {
             ldap_set_option($connresult, LDAP_OPT_PROTOCOL_VERSION, $ldap_version);
