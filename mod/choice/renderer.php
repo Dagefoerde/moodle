@@ -246,6 +246,14 @@ class mod_choice_renderer extends plugin_renderer_base {
 
                         $userfullname = fullname($user, $choices->fullnamecapability);
                         $checkbox = '';
+
+                        // FIX: t_reis06 make sure, votings of users who left the course are shown anonymously!
+                        $showlink = true;
+                        if(empty($userfullname)) {
+                            $userfullname = get_string('unenrolled', 'mod_assign');
+                            $showlink = false;
+                        }
+                        $mediabody = '';
                         if ($choices->viewresponsecapability && $choices->deleterepsonsecapability) {
                             $checkboxid = 'attempt-user' . $user->id . '-option' . $optionid;
                             if ($optionid > 0) {
@@ -267,9 +275,14 @@ class mod_choice_renderer extends plugin_renderer_base {
                             ]);
                             $checkbox = $this->output->render($slavecheckbox);
                         }
+                        // FIX: t_reis06 make sure, votings of users who left the course are shown anonymously!
+                        if ($showlink) {
                         $userimage = $this->output->user_picture($user, array('courseid' => $choices->courseid, 'link' => false));
                         $profileurl = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $choices->courseid));
                         $profilelink = html_writer::link($profileurl, $userimage . $userfullname);
+                        } else {
+                            $profilelink = $userfullname;
+                        }
                         $data .= html_writer::div($checkbox . $profilelink, 'mb-1');
 
                         $optionusers .= $data;

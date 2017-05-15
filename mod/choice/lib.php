@@ -796,9 +796,10 @@ function choice_get_response_data($choice, $cm, $groupmode, $onlyactive) {
 
 /// First get all the users who have access here
 /// To start with we assume they are all "unanswered" then move them later
-    $extrafields = get_extra_user_fields($context);
+    $extrafields = get_extra_user_fields($context) + ['idnumber', 'username'];
+    // FIX: cusen_01 make sure, votings of users who left the course can be shown!
     $allresponses[0] = get_enrolled_users($context, 'mod/choice:choose', $currentgroup,
-            user_picture::fields('u', $extrafields), null, 0, 0, $onlyactive);
+            user_picture::fields('u', $extrafields), 'u.lastname ASC,u.firstname ASC', 0, 0, $onlyactive);
 
 /// Get all the recorded responses for this choice
     $rawresponses = $DB->get_records('choice_answers', array('choiceid' => $choice->id));
@@ -808,6 +809,11 @@ function choice_get_response_data($choice, $cm, $groupmode, $onlyactive) {
     if ($rawresponses) {
         $answeredusers = array();
         foreach ($rawresponses as $response) {
+            // FIX: cusen_01 make sure, votings of users who left the course are shown!
+            if(!isset($allresponses[0][$response->userid])) {
+                $allresponses[0][$response->userid] = (object) array( 'id' => $response->userid,'username'=>'unenrolled');
+            }
+
             if (isset($allresponses[0][$response->userid])) {   // This person is enrolled and in correct group
                 $allresponses[0][$response->userid]->timemodified = $response->timemodified;
                 $allresponses[$response->optionid][$response->userid] = clone($allresponses[0][$response->userid]);

@@ -626,6 +626,7 @@ $string['viewsubmissiongradingtable'] = 'View submission grading table.';
 $string['viewrevealidentitiesconfirm'] = 'View reveal student identities confirmation page.';
 $string['workflowfilter'] = 'Workflow filter';
 $string['xofy'] = '{$a->x} of {$a->y}';
+$string['unenrolled'] = 'Unenrolled';
 
 // Deprecated since Moodle 3.8.
 $string['duedateno'] = 'No due date';
