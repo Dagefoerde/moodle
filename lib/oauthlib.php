@@ -544,12 +544,16 @@ abstract class oauth2_client extends curl {
             'redirect_uri' => $callbackurl->out(false),
         );
 
+        $headersbefore = $this->header;
+        $this->header[] = "Authorization: Basic " . base64_encode("{$this->clientid}:{$this->clientsecret}");
+
         // Requests can either use http GET or POST.
         if ($this->use_http_get()) {
             $response = $this->get($this->token_url(), $params);
         } else {
             $response = $this->post($this->token_url(), $this->build_post_data($params));
         }
+        $this->header = $headersbefore;
 
         if ($this->info['http_code'] !== 200) {
             throw new moodle_exception('Could not upgrade oauth token');
