@@ -79,12 +79,18 @@ class webdav_client {
     private $_cnonce = '';
     private $_nc = 0;
 
+    /**
+     * OAuth token used for bearer auth.
+     * @var string
+     */
+    private $oauthtoken;
+
     /**#@-*/
 
     /**
      * Constructor - Initialise class variables
      */
-    function __construct($server = '', $user = '', $pass = '', $auth = false, $socket = '') {
+    function __construct($server = '', $user = '', $pass = '', $auth = false, $socket = '', $oauthtoken = '') {
         if (!empty($server)) {
             $this->_server = $server;
         }
@@ -94,6 +100,9 @@ class webdav_client {
         }
         $this->_auth = $auth;
         $this->_socket = $socket;
+        if ($auth == 'bearer') {
+            $this->oauthtoken = $oauthtoken;
+        }
     }
     public function __set($key, $value) {
         $property = '_' . $key;
@@ -1323,6 +1332,8 @@ EOD;
             if ($signature = $this->digest_signature($method)){
                 $this->header_add($signature);
             }
+        } else if ($this->_auth == 'bearer') {
+            $this->header_add(sprintf('Authorization: Bearer %s', $this->oauthtoken));
         }
     }
 
