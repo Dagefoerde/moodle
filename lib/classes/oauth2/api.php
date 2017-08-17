@@ -457,7 +457,11 @@ class api {
         $issuer->update();
 
         // Perform service discovery.
-        self::discover_endpoints($issuer);
+        try {
+            self::discover_endpoints($issuer);
+        } catch (\Exception $e) {
+            \core\notification::add($e->getMessage(), \core\output\notification::NOTIFY_WARNING);
+        }
         self::guess_image($issuer);
         return $issuer;
     }
@@ -476,7 +480,11 @@ class api {
         $issuer->create();
 
         // Perform service discovery.
-        self::discover_endpoints($issuer);
+        try {
+            self::discover_endpoints($issuer);
+        } catch (\Exception $e) {
+            \core\notification::add($e->getMessage(), \core\output\notification::NOTIFY_WARNING);
+        }
         self::guess_image($issuer);
         return $issuer;
     }
