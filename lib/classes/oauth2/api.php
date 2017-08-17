@@ -375,7 +375,7 @@ class api {
         }
 
         if (!$json = $curl->get($url)) {
-            $msg = 'Could not discover end points for identity issuer' . $issuer->get('name');
+            $msg = 'Could not discover endpoints for identity issuer ' . $issuer->get('name');
             throw new moodle_exception($msg);
         }
 
@@ -385,7 +385,7 @@ class api {
 
         $info = json_decode($json);
         if (empty($info)) {
-            $msg = 'Could not discover end points for identity issuer' . $issuer->get('name');
+            $msg = 'Could not discover endpoints for identity issuer ' . $issuer->get('name');
             throw new moodle_exception($msg);
         }
 
