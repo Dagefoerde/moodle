@@ -84,6 +84,7 @@ function initialize_further_configs($debug = false) {
     // Customize essential theme to fit the Learnweb layout
     $CFG->forced_plugin_settings["theme_essential"] = array(
         // Essential: Allgemein
+        "flatnavigation" => false,
         "oldnavbar" => true,
         "pagewidth" => 1400,
         "layout" => false,
