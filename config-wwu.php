@@ -115,6 +115,9 @@ function initialize_further_configs($debug = false) {
         "enablealternativethemecolors3" => false,
         "enablealternativethemecolors4" => false,
         "enablealternativethemecolors5" => false,
+        "themesidepreblocktextcolour" => "#333",
+        "themesidepreblockurlcolour" => "#217a94",
+        "themesidepreblockhovercolour" => "#666",
         // Essential: Kopfbereich
         "headertitle" => 1,
         "navbartitle" => 0,
@@ -301,10 +304,10 @@ $CFG->debugdisplay = 1;             // NOT FOR PRODUCTION SERVERS!
 // $CFG->debugusers = '2,3,5';
 //
 // Prevent theme caching
- //$CFG->themedesignermode = true; // NOT FOR PRODUCTION SERVERS!
+ $CFG->themedesignermode = true; // NOT FOR PRODUCTION SERVERS!
 //
 // Prevent JS caching
-// $CFG->cachejs = false; // NOT FOR PRODUCTION SERVERS!
+ $CFG->cachejs = false; // NOT FOR PRODUCTION SERVERS!
 //
 // Restrict which YUI logging statements are shown in the browser console.
 // For details see the upstream documentation:
