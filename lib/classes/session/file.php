@@ -36,6 +36,7 @@ defined('MOODLE_INTERNAL') || die();
 class file extends handler {
     /** @var string session dir */
     protected $sessiondir;
+    protected $hierarchy = 2;
 
     /**
      * Create new instance of handler.
@@ -62,6 +63,19 @@ class file extends handler {
         if (!is_writable($this->sessiondir)) {
             throw new exception('sessionhandlerproblem', 'error', '', null, 'Session directory is not writable');
         }
+
+        if ($this->hierarchy === 2) {
+            // Create session dir hierarchy.
+            // TODO make flexible for != 2 levels.
+            $validchars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+            foreach ($validchars as $c0) {
+                make_writable_directory("$this->sessiondir/$c0", false);
+                foreach ($validchars as $c1) {
+                    make_writable_directory("$this->sessiondir/$c0/$c1", false);
+                }
+            }
+        }
+
         // Need to disable debugging since disk_free_space()
         // will fail on very large partitions (see MDL-19222).
         $freespace = @disk_free_space($this->sessiondir);
@@ -72,7 +86,8 @@ class file extends handler {
 
         // NOTE: we cannot set any lock acquiring timeout here - bad luck.
         ini_set('session.save_handler', 'files');
-        ini_set('session.save_path', $this->sessiondir);
+        ini_set('session.save_path', $this->hierarchy.';'.$this->sessiondir);
+        // WWU j_dage01: (above) http://php.net/manual/de/session.configuration.php#ini.session.save-path
     }
 
     /**
@@ -88,7 +103,8 @@ class file extends handler {
         if (!$sid) {
             return false;
         }
-        $sessionfile = "$this->sessiondir/sess_$sid";
+        $path = $this->determine_subpath($sid);
+        $sessionfile = "$this->sessiondir/$path/sess_$sid";
         return file_exists($sessionfile);
     }
 
@@ -98,7 +114,12 @@ class file extends handler {
      */
     public function kill_all_sessions() {
         if (is_dir($this->sessiondir)) {
-            foreach (glob("$this->sessiondir/sess_*") as $filename) {
+            $c = [];
+            for ($i = 0; $i < $this->hierarchy; $i++) {
+                $c[] = '*';
+            }
+            $path = implode('/', $c);
+            foreach (glob("$this->sessiondir/$path/sess_*") as $filename) {
                 @unlink($filename);
             }
         }
@@ -113,9 +134,23 @@ class file extends handler {
         if (!$sid) {
             return;
         }
-        $sessionfile = "$this->sessiondir/sess_$sid";
+        $path = $this->determine_subpath($sid);
+        $sessionfile = "$this->sessiondir/$path/sess_$sid";
         if (file_exists($sessionfile)) {
             @unlink($sessionfile);
         }
+    }
+
+    /**
+     * @param $sid
+     * @return string
+     */
+    public function determine_subpath($sid) {
+        $c = [];
+        for ($i = 0; $i < $this->hierarchy; $i++) {
+            $c[] = $sid[$i];
+        }
+        $path = implode('/', $c);
+        return $path;
     }
 }
