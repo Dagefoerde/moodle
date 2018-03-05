@@ -80,3 +80,52 @@
 	path = admin/tool/lifecycle
 	url = git@github.com:learnweb/moodle-tool_lifecycle.git
 	branch = wwu/subplugin-config
+[submodule "mod/activequiz"]
+	path = mod/activequiz
+	url = https://github.com/jhoopes/moodle-mod_activequiz.git
+[submodule "mod/scheduler"]
+	path = mod/scheduler
+	url = https://github.com/bostelm/moodle-mod_scheduler.git
+[submodule "question/behaviour/gmatch"]
+	path = question/behaviour/gmatch
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-graph-match-behaviour.git
+[submodule "question/type/gmatch"]
+	path = question/type/gmatch
+	url = git@wiwi-gitlab.uni-muenster.de:learnweb/moodle-graph-match-type.git
+[submodule "blocks/ntproject_admin"]
+	path = blocks/ntproject_admin
+	url = git@wiwi-gitlab.uni-muenster.de:Learnweb-ntproject/moodle-block_ntproject_admin.git
+[submodule "blocks/ntproject_ranking"]
+	path = blocks/ntproject_ranking
+	url = git@wiwi-gitlab.uni-muenster.de:Learnweb-ntproject/moodle-block_ntproject_ranking.git
+[submodule "mod/ntproject"]
+	path = mod/ntproject
+	url = git@wiwi-gitlab.uni-muenster.de:Learnweb-ntproject/moodle-mod_ntproject.git
+[submodule "mod/ntprojectassembler"]
+	path = mod/ntprojectassembler
+	url = git@wiwi-gitlab.uni-muenster.de:Learnweb-ntproject/moodle-mod_ntprojectassembler.git
+[submodule "lib/editor/marklar"]
+	path = lib/editor/marklar
+	url = https://github.com/mudrd8mz/moodle-editor_marklar.git
+[submodule "mod/etherpadlite"]
+	path = mod/etherpadlite
+	url = https://github.com/moodlehu/moodle-mod_etherpadlite.git
+[submodule "mod/hvp"]
+	path = mod/hvp
+	url = https://github.com/h5p/h5p-moodle-plugin
+	branch = stable
+[submodule "course/format/topcoll"]
+	path = course/format/topcoll
+	url = https://github.com/gjb2048/moodle-format_topcoll.git
+[submodule "mod/moodleoverflow"]
+	path = mod/moodleoverflow
+	url = git@github.com:learnweb/moodle-mod_moodleoverflow.git
+[submodule "admin/tool/log/store/usage"]
+	path = admin/tool/log/store/usage
+	url = git@github.com:learnweb/moodle-logstore_usage.git
+[submodule "report/usage"]
+	path = report/usage
+	url = git@github.com:learnweb/moodle-report_usage.git
+[submodule "mod/collaborativefolders"]
+	path = mod/collaborativefolders
+	url = git@github.com:learnweb/moodle-mod_collaborativefolders
