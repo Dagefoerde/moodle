@@ -90,6 +90,20 @@
     width: 16px;
     height: 16px;
 }
+// Repository chooser: Link color and highlight of the repository marked as active (filepicker).
+.fp-repo-area .fp-repo .nav-link {
+    color: $list-group-link-color;
+    // Hover/active state
+    @include hover-focus-active {
+        color: $list-group-link-hover-color;
+        background-color: $list-group-hover-bg;
+    }
+}
+
+.fp-repo-area .fp-repo.active .nav-link {
+    color: $list-group-link-hover-color;
+    background-color: $list-group-hover-bg;
+}
 // Tools, Path & View on fp-navbar (File Picker and File Manager)
 .fp-toolbar {
     float: left;
