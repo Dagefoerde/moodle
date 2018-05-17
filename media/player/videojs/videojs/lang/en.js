@@ -31,7 +31,7 @@ videojs.addLanguage('en', {
   "Volume Level": "Volume Level",
   "You aborted the media playback": "You aborted the media playback",
   "A network error caused the media download to fail part-way.": "A network error caused the media download to fail part-way.",
-  "The media could not be loaded, either because the server or network failed or because the format is not supported.": "The media could not be loaded, either because the server or network failed or because the format is not supported.",
+  "The media could not be loaded, either because the server or network failed or because the format is not supported.": "The media could not be loaded, probably due to an authentication error. Please use the Single-Sign-On (SSO) login and try to load the video again.",
   "The media playback was aborted due to a corruption problem or because the media used features your browser did not support.": "The media playback was aborted due to a corruption problem or because the media used features your browser did not support.",
   "No compatible source was found for this media.": "No compatible source was found for this media.",
   "The media is encrypted and we do not have the keys to decrypt it.": "The media is encrypted and we do not have the keys to decrypt it.",
