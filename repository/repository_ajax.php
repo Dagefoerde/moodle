@@ -88,7 +88,14 @@ if (!empty($course)) {
     $coursemaxbytes = $course->maxbytes;
 }
 // Make sure maxbytes passed is within site filesize limits.
+// t_reis06@WWU: Override max_upload_limit for block_opencast
+if ($context instanceof context_block &&
+    $block = $DB->get_record('block_instances', array('id' => $context->instanceid)) &&
+    $block->blockname = 'block_opencast') {
+    $maxbytes = get_user_max_upload_file_size($context, -1, -1, $maxbytes);
+} else {
 $maxbytes = get_user_max_upload_file_size($context, $CFG->maxbytes, $coursemaxbytes, $maxbytes);
+}
 
 // Wait as long as it takes for this script to finish
 core_php_time_limit::raise();
