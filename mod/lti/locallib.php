@@ -838,7 +838,7 @@ function lti_build_request($instance, $typeconfig, $course, $typeid = null, $isl
 
     $requestparams = array(
         'user_id' => $USER->id,
-        'lis_person_sourcedid' => $USER->idnumber,
+        'lis_person_sourcedid' => '', // t_reis06@WWU: idnumber (Matrikelnummer) sollte niemals uebertragen werden.
         'roles' => $role,
         'context_id' => $course->id,
         'context_label' => trim(html_to_text($course->shortname, 0)),
