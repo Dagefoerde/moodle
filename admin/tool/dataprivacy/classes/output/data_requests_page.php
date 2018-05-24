@@ -106,6 +106,16 @@ class data_requests_page implements renderable, templatable {
                 $actions[] = new action_menu_link_secondary($actionurl, null, $actiontext, $actiondata);
             }
 
+            if ($status == api::DATAREQUEST_STATUS_COMPLETE) {
+                $usercontext = \context_user::instance($request->get("userid"), IGNORE_MISSING);
+                if ($usercontext) {
+                    $downloadurl = moodle_url::make_pluginfile_url($usercontext->id, 'tool_dataprivacy', 'export', $requestid,
+                        '/', 'export.zip', true);
+                    $downloadtext = get_string('download', 'tool_dataprivacy');
+                    $actions[] = new action_menu_link_secondary($downloadurl, null, $downloadtext);
+                }
+            }
+
             $actionsmenu = new action_menu($actions);
             $actionsmenu->set_menu_trigger(get_string('actions'));
             $actionsmenu->set_owner_selector('request-actions-' . $requestid);
