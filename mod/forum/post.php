@@ -1100,6 +1100,11 @@ if (empty($parententity) && empty($edit) && !$capabilitymanager->can_create_disc
     print_error('cannotcreatediscussion', 'forum');
 }
 
+// WWU j_dage01: show warning if attempting to post to an invisible forum.
+if (!$cm->visible) {
+    \core\notification::add(get_string('postingtoinvisible', 'forum'), 'warning');
+}
+
 if (!empty($discussionentity) && 'qanda' == $forumentity->get_type()) {
     $displaywarning = $capabilitymanager->must_post_before_viewing_discussion($USER, $discussionentity);
     $displaywarning = $displaywarning && !forum_user_has_posted($forumentity->get_id(), $discussionentity->get_id(), $USER->id);
