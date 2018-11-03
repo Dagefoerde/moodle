@@ -420,6 +420,12 @@ class repository_nextcloud extends repository {
         $repositoryname = $this->get_name();
         $reference = json_decode($storedfile->get_reference());
 
+        // Handle legacy references (not supported by current versions anymore).
+        if ($reference->type == 'FILE_REFERENCE') {
+            redirect($reference->link);
+            exit;
+        }
+
         // 1. assure the client and user is logged in.
         if (empty($this->client) || $this->get_system_oauth_client() === false || $this->get_system_ocs_client() === null) {
             $details = get_string('contactadminwith', 'repository_nextcloud',
