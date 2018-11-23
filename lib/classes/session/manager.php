@@ -1217,7 +1217,8 @@ class manager {
     public static function validate_login_token($token = false) {
         global $CFG;
 
-        if (!empty($CFG->alternateloginurl) || !empty($CFG->disablelogintoken)) {
+        // WWU @j_dage01: Skip token check if wwu_username() holds a value.
+        if (!empty($CFG->alternateloginurl) || !empty($CFG->disablelogintoken) || !empty(wwusso_username())) {
             // An external login page cannot generate the login token we need to protect CSRF on
             // login requests.
             // Other custom login workflows may skip this check by setting disablelogintoken in config.
