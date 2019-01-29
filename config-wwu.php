@@ -81,6 +81,9 @@ function initialize_further_configs($debug = false) {
     // feature and hide it from the server administration UI.
     $CFG->disableonclickaddoninstall = true;
 
+    // Set maxbytes fix to 512MB.
+    $CFG->maxbytes = 536870912;
+
     // Customize essential theme to fit the Learnweb layout
     $CFG->forced_plugin_settings["theme_essential"] = array(
         // Essential: Allgemein
