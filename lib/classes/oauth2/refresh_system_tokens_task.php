@@ -48,34 +48,33 @@ class refresh_system_tokens_task extends scheduled_task {
     }
 
     /**
-     * Notify admins when an OAuth refresh token expires. Should not happen if cron is running regularly.
+     * Notify main admin when an OAuth refresh token expires. Should not happen if cron is running regularly.
      * @param \core\oauth2\issuer $issuer
      */
     protected function notify_admins(\core\oauth2\issuer $issuer) {
         global $CFG;
-        $admins = get_admins();
+        $admin = get_admin();
 
-        if (empty($admins)) {
+        if (!$admin) {
             return;
         }
-        foreach ($admins as $admin) {
-            $strparams = ['siteurl' => $CFG->wwwroot, 'issuer' => $issuer->get('name')];
-            $long = get_string('oauthrefreshtokenexpired', 'core_admin', $strparams);
-            $short = get_string('oauthrefreshtokenexpiredshort', 'core_admin', $strparams);
-            $message = new \core\message\message();
-            $message->courseid          = SITEID;
-            $message->component         = 'moodle';
-            $message->name              = 'errors';
-            $message->userfrom          = core_user::get_noreply_user();
-            $message->userto            = $admin;
-            $message->subject           = $short;
-            $message->fullmessage       = $long;
-            $message->fullmessageformat = FORMAT_PLAIN;
-            $message->fullmessagehtml   = $long;
-            $message->smallmessage      = $short;
-            $message->notification      = 1;
-            message_send($message);
-        }
+
+        $strparams = ['siteurl' => $CFG->wwwroot, 'issuer' => $issuer->get('name')];
+        $long = get_string('oauthrefreshtokenexpired', 'core_admin', $strparams);
+        $short = get_string('oauthrefreshtokenexpiredshort', 'core_admin', $strparams);
+        $message = new \core\message\message();
+        $message->courseid          = SITEID;
+        $message->component         = 'moodle';
+        $message->name              = 'errors';
+        $message->userfrom          = core_user::get_noreply_user();
+        $message->userto            = $admin;
+        $message->subject           = $short;
+        $message->fullmessage       = $long;
+        $message->fullmessageformat = FORMAT_PLAIN;
+        $message->fullmessagehtml   = $long;
+        $message->smallmessage      = $short;
+        $message->notification      = 1;
+        message_send($message);
     }
 
 
