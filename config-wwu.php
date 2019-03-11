@@ -98,7 +98,9 @@ function initialize_further_configs($debug = false) {
         "customscrollbars" => false,
         "floatingsubmitbuttons" => false,
         "returntosectionfeature" => false,
-        // Essential: Farbe
+	// Essential: Farbe
+	"themedefaultbuttonbackgroundcolour" => "#578014",
+	"themedefaultbuttonbackgroundhovercolour" => "#929a9d",
         "themecolor" => "#006784",
         "themetextcolor" => "#333",
         "themeurlcolor" => "#006784",
