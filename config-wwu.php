@@ -63,6 +63,7 @@ function initialize_further_configs($debug = false) {
     //      $CFG->defaultblocks_topics = 'participants,activity_modules,search_forums,course_list:news_items,calendar_upcoming,recent_activity';
             $CFG->defaultblocks_weeks =  'activity_modules:search_forums,news_items,calendar_upcoming,recent_activity,visual_library';
     //      $CFG->defaultblocks_weeks = 'participants,activity_modules,search_forums,course_list:news_items,calendar_upcoming,recent_activity';
+            $CFG->defaultblocks_topcoll =  'activity_modules:search_forums,news_items,calendar_upcoming,recent_activity,visual_library';
     
     // Completely disable user creation when restoring a course, bypassing any
     // permissions granted via roles and capabilities. Enabling this setting
