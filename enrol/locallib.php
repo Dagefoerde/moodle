@@ -403,6 +403,12 @@ class course_enrolment_manager {
         $extrafields[] = 'username';
         $extrafields[] = 'lastaccess';
         $extrafields[] = 'maildisplay';
+        // t_reis06@WWU: Remove idnumber from the set of returned userfields for the enrolment suggestion.
+        foreach($extrafields as $key => $value){
+            if($value == 'idnumber') {
+                unset($extrafields[$key]);
+            }
+        }
         $ufields = user_picture::fields('u', $extrafields);
 
         return array($ufields, $params, $wherecondition);
