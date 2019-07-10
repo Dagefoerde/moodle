@@ -189,11 +189,17 @@ class pgsql_native_moodle_database extends moodle_database {
         }
 
         ob_start();
+// WWU j_dage01 make errors visible in connection error emails
+       $reportinglevelbefore = error_reporting(E_ALL);
+       $inibefore = @ini_set('display_errors', 1);
         if (empty($this->dboptions['dbpersist'])) {
             $this->pgsql = pg_connect($connection, PGSQL_CONNECT_FORCE_NEW);
         } else {
             $this->pgsql = pg_pconnect($connection, PGSQL_CONNECT_FORCE_NEW);
         }
+// WWU j_dage01 reset to previous level
+       error_reporting($reportinglevelbefore);
+       @ini_set('display_errors', $inibefore);
         $dberr = ob_get_contents();
         ob_end_clean();
 
@@ -201,7 +207,8 @@ class pgsql_native_moodle_database extends moodle_database {
 
         if ($status === false or $status === PGSQL_CONNECTION_BAD) {
             $this->pgsql = null;
-            throw new dml_connection_exception($dberr);
+// WWU j_dage01 append additional information that is useful for debugging
+            throw new dml_connection_exception($dberr.gethostname());
         }
 
         if (!empty($this->dboptions['dbpersist'])) {
