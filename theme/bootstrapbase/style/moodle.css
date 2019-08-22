@@ -16622,7 +16622,6 @@ form {
   font-size: 10.5px;
   display: block;
 }
-.form-item .form-setting,
 .form-item .form-description,
 .mform .fitem .felement,
 #page-mod-forum-search .c1 {
@@ -20685,7 +20684,6 @@ span[data-flexitour="container"][x-placement="right-start"] div[data-role="arrow
   .form-horizontal .control-label {
     width: 200px;
   }
-  .form-item .form-setting,
   .form-item .form-description,
   .mform .fitem .felement,
   #page-mod-forum-search .c1,
@@ -20751,7 +20749,6 @@ span[data-flexitour="container"][x-placement="right-start"] div[data-role="arrow
   .form-horizontal .control-label {
     width: 245px;
   }
-  .form-item .form-setting,
   .form-item .form-description,
   .mform .fitem .felement,
   #page-mod-forum-search .c1,
@@ -20960,7 +20957,6 @@ span[data-flexitour="container"][x-placement="right-start"] div[data-role="arrow
   .form-label span.form-shortname {
     display: inline-block;
   }
-  .form-item .form-setting,
   .mform .fitem .felement,
   .path-backup .mform .fitem .felement,
   .mform .fdescription.required,
