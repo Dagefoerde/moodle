@@ -153,6 +153,9 @@ function initialize_further_configs($debug = false) {
         "hideonphone" => false,
       );
 
+    // Force developer level debug and add debug info to the output of cron
+    $CFG->showcrondebugging = true;
+
     if($debug) {
         initialize_further_configs_debug($debug);
     } else {
