@@ -272,6 +272,17 @@ class quiz_overview_table extends quiz_attempts_report_table {
      * @return string the contents of the cell.
      */
     public function other_cols($colname, $attempt) {
+        // WWU @j_dage01 füge Zeitpunkt der (abschließenden) Beantwortung der Tabelle hinzu.
+        if ($this->is_downloading() && preg_match('/^qscompleted(\d+)$/', $colname, $matches)) {
+            $slot = $matches[1];
+            if (!isset($this->lateststeps[$attempt->usageid][$slot])) {
+                return '-';
+            }
+            $stepdata = $this->lateststeps[$attempt->usageid][$slot];
+            $timecompleted = $stepdata->timecreated;
+
+            return userdate($timecompleted, get_string('strftimedatetimeshort'));
+        }
         if (!preg_match('/^qsgrade(\d+)$/', $colname, $matches)) {
             return null;
         }

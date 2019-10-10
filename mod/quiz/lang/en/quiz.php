@@ -669,6 +669,7 @@ $string['publish'] = 'Publish';
 $string['publishedit'] = 'You must have permission in the publishing course to add or edit questions in this category';
 $string['qname'] = 'name';
 $string['qbrief'] = 'Q. {$a}';
+$string['qbriefcompleted'] = 'Q. {$a} completed';
 $string['qti'] = 'IMS QTI format';
 $string['qtypename'] = 'type, name';
 $string['question'] = 'Question';

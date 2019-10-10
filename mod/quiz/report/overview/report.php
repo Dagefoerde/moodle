@@ -201,6 +201,11 @@ class quiz_overview_report extends quiz_attempts_report {
                     }
                     $header .= '/' . quiz_rescale_grade($question->maxmark, $quiz, 'question');
                     $headers[] = $header;
+                    // WWU @j_dage01 füge Zeitpunkt der (abschließenden) Beantwortung der Tabelle hinzu.
+                    if ($table->is_downloading()) {
+                        $columns[] = 'qscompleted' . $slot;
+                        $headers[] = get_string('qbriefcompleted', 'quiz', $question->number);
+                    }
                 }
             }
 
