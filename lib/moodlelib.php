@@ -6181,6 +6181,10 @@ function email_to_user($user, $from, $subject, $messagetext, $messagehtml = '', 
         $fromstring = $fromdetails->name;
         if ($CFG->emailfromvia != EMAIL_VIA_NEVER) {
             $fromstring = get_string('emailvia', 'core', $fromdetails);
+	}
+	// t_reis@WWU: In case of a no-reply user, we want to display only the site name.
+        if ($fromdetails->name == get_string('noreplyname')) {
+            $fromstring = format_string($SITE->shortname) . ' (' . get_string('noreplyname') . ')';
         }
         $mail->FromName = $fromstring;
         if (empty($replyto)) {
