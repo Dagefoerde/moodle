@@ -80,6 +80,12 @@
 	path = admin/tool/lifecycle
 	url = git@github.com:learnweb/moodle-tool_lifecycle.git
 	branch = wwu/subplugin-config
+[submodule "theme/wwu2019"]
+	path = theme/wwu2019
+	url = git@github.com:learnweb/moodle-theme_wwu2019.git
+[submodule "admin/tool/mergeusers"]
+	path = admin/tool/mergeusers
+	url = git@github.com:ndunand/moodle-tool_mergeusers.git
 [submodule "mod/activequiz"]
 	path = mod/activequiz
 	url = https://github.com/jhoopes/moodle-mod_activequiz.git
