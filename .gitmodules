@@ -135,3 +135,6 @@
 [submodule "mod/collaborativefolders"]
 	path = mod/collaborativefolders
 	url = git@github.com:learnweb/moodle-mod_collaborativefolders
+[submodule "files/converter/onlyoffice"]
+	path = files/converter/onlyoffice
+	url = https://github.com/Dagefoerde/moodle-fileconverter_onlyoffice.git
