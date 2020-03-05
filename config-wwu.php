@@ -528,3 +528,12 @@ $CFG->divertallemailsto = 'elearnt@uni-muenster.de'; // NOT FOR PRODUCTION SERVE
 $CFG->alternativeupdateproviderurl = 'http://download.moodle.org/api/1.2/updates.php';
 
 }
+
+/**
+ * To use it, call it after setup.php is required.
+ */
+function use_production_moodledata_as_backup() {
+    global $CFG;
+    require_once(dirname(__FILE__) . '/wwu_file_system_filedir.php');
+    $CFG->alternative_file_system_class = '\\wwu_file_system_filedir';
+}
