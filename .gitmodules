@@ -70,6 +70,7 @@
 [submodule "blocks/opencast"]
 	path = blocks/opencast
 	url = git@github.com:unirz-tu-ilmenau/moodle-block_opencast.git
+	branch = feature/uploadlimit
 [submodule "filter/opencast"]
 	path = filter/opencast
 	url = git@github.com:learnweb/moodle-filter_opencastfilter.git
