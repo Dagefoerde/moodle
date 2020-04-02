@@ -438,7 +438,7 @@ class badge {
 
         // Take into account user badges privacy settings.
         // If none set, badges default visibility is set to public.
-        $issued->visible = get_user_preferences('badgeprivacysetting', 1, $userid);
+        $issued->visible = get_user_preferences('badgeprivacysetting', 0, $userid);
 
         $result = $DB->insert_record('badge_issued', $issued, true);
 

@@ -39,7 +39,7 @@ class badges_preferences_form extends moodleform {
         $mform->addElement('header', 'badgeprivacy', get_string('badgeprivacysetting', 'badges'));
         $mform->addElement('advcheckbox', 'badgeprivacysetting', '', get_string('badgeprivacysetting_str', 'badges'));
         $mform->setType('badgeprivacysetting', PARAM_INT);
-        $mform->setDefault('badgeprivacysetting', 1);
+        $mform->setDefault('badgeprivacysetting', 0);
         $mform->addHelpButton('badgeprivacy', 'badgeprivacysetting', 'badges');
 
         $this->add_action_buttons();

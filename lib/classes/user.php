@@ -976,7 +976,7 @@ class core_user {
                 }
                 return $value;
             });
-        $preferences['badgeprivacysetting'] = array('type' => PARAM_INT, 'null' => NULL_NOT_ALLOWED, 'default' => 1,
+        $preferences['badgeprivacysetting'] = array('type' => PARAM_INT, 'null' => NULL_NOT_ALLOWED, 'default' => 0,
             'choices' => array(0, 1), 'permissioncallback' => function($user, $preferencename) {
                 global $CFG, $USER;
                 return !empty($CFG->enablebadges) && $user->id == $USER->id;
